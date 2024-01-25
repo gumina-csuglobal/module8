@@ -111,7 +111,24 @@ class ShoppingCart:
             item.print_description()
 
 
+# Prompts user for information about a new item
+# creates and returns the item
+def prompt_item_for_sale():    
+    print("\nADD ITEM TO CART")
+    item_name = input("Enter the item name:\n")
+    item_description = input("Enter the item description:\n")
+    item_price = float(input("Enter the item price:\n"))
+    item_quantity = int(input("Enter the item quantity:\n"))
 
+    item = ItemToPurchase()
+    item.item_name = item_name
+    item.item_description = item_description
+    item.item_price = item_price
+    item.item_quantity = item_quantity
+
+    return item
+
+    
 
 def print_menu(shopping_cart):
     while True:
@@ -122,7 +139,9 @@ def print_menu(shopping_cart):
             shopping_cart.print_descriptions()
         elif choice == "o":
             shopping_cart.print_total()
-
+        elif choice == "a":
+            item = prompt_item_for_sale()
+            shopping_cart.add_item(item)
 
 def input_choice():
     print("\n\nMENU")
@@ -157,9 +176,18 @@ def init_items():
     headphones.item_price = 128
 
     return [nike,cookies,headphones]
+
+# Prompt user information needed to create shopping car.
+# returns new shopping cart
+def prompt_shopping_cart():
+    name = input("\nWhat is your name?: ")
+    date = input("\nWhat is today's date?: ")
+
+    return ShoppingCart(name,date)
+
     
 def main():
-    shopping_cart = ShoppingCart("John Doe","February 1, 2020")
+    shopping_cart = prompt_shopping_cart()
     shopping_cart.cart_items = init_items()
 
     print_menu(shopping_cart)
