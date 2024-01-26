@@ -43,7 +43,7 @@ class ShoppingCart:
 
     
     def add_item(self, item_to_purchase):
-        pass
+        self.cart_items.append(item_to_purchase)
         
     def remove_item(self, item_name):
 
@@ -65,7 +65,9 @@ class ShoppingCart:
                 # If item_to_purchase is default, do not modify
                 if item_to_purchase.is_default():
                     break
-                self.cart_items[idx] = item_to_purchase
+
+                # Change the quantity of the item in shopping cart
+                item.item_quantity = item_to_purchase.item_quantity                
 
         # Item not found        
         else:
@@ -113,7 +115,7 @@ class ShoppingCart:
 
 # Prompts user for information about a new item
 # creates and returns the item
-def prompt_item_for_sale():    
+def prompt_add_item():    
     print("\nADD ITEM TO CART")
     item_name = input("Enter the item name:\n")
     item_description = input("Enter the item description:\n")
@@ -128,7 +130,26 @@ def prompt_item_for_sale():
 
     return item
 
-    
+# Prompts user for name of item to remove
+# Return item name
+def prompt_remove_item():    
+    print("\nREMOVE ITEM FROM CART")
+    item_name = input("Enter name of item to remove:\n")    
+    return item_name
+
+# Prompts user for new quantity of an item
+# Return new item with new quantity
+def prompt_modify_item():    
+    print("\nCHANGE ITEM QUANTITY")
+    item_name = input("Enter the item name:\n")    
+    quantity = int(input("Enter the new quantity:\n"))
+
+    # Create and return new ItemToPurchase with new quantity
+    item = ItemToPurchase()
+    item.item_name = item_name
+    item.item_quantity = quantity
+    return item
+
 
 def print_menu(shopping_cart):
     while True:
@@ -140,8 +161,14 @@ def print_menu(shopping_cart):
         elif choice == "o":
             shopping_cart.print_total()
         elif choice == "a":
-            item = prompt_item_for_sale()
+            item = prompt_add_item()
             shopping_cart.add_item(item)
+        elif choice == "r":
+            item_name = prompt_remove_item()
+            shopping_cart.remove_item(item_name)
+        elif choice == "c":
+            new_item = prompt_modify_item()
+            shopping_cart.modify_item(new_item)
 
 def input_choice():
     print("\n\nMENU")
@@ -153,35 +180,14 @@ def input_choice():
     print("q - Quit")
     return input("Choose an option: ")    
 
-# Temporary initial items to populate shopping cart with
-# Until all menu items implemented
-def init_items():
-    nike = ItemToPurchase()
-    cookies = ItemToPurchase()
-    headphones = ItemToPurchase()
-
-    nike.item_name="Nike Romaleos"
-    nike.item_description="Volt color, Weightlifting shoes"
-    nike.item_quantity= 2
-    nike.item_price = 189
-
-    cookies.item_name="Chocolate Chips"
-    cookies.item_description="Semi-sweet"
-    cookies.item_quantity= 5
-    cookies.item_price = 3
-
-    headphones.item_name="Powerbeats 2 Headphones"
-    headphones.item_description="Bluetooth headphones"
-    headphones.item_quantity= 1
-    headphones.item_price = 128
-
-    return [nike,cookies,headphones]
 
 # Prompt user information needed to create shopping car.
 # returns new shopping cart
 def prompt_shopping_cart():
-    name = input("\nWhat is your name?: ")
-    date = input("\nWhat is today's date?: ")
+    name = input("\nEnter customer's name:\n")
+    date = input("\nEnter today's date:\n")
+    print(f"Customer name: {name}")
+    print(f"Today's date: {date}")
 
     return ShoppingCart(name,date)
 
