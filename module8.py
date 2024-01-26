@@ -24,7 +24,7 @@ class ItemToPurchase:
     
     # Returns boolean indicating whether this is a default ItemToPurchase with no modifications
     def is_default(self):
-        return self.item == "None" and self.item_price == 0 and self.item_quantity == 0 and self.item_description=="None"
+        return self.item_name == "None" and self.item_price == 0 and self.item_quantity == 0 and self.item_description=="None"
         
                
     
@@ -48,7 +48,7 @@ class ShoppingCart:
     def remove_item(self, item_name):
 
         for idx, item in enumerate(self.cart_items):
-            if item.name == item_name:
+            if item.item_name == item_name:
                 del self.cart_items[idx]
                 break
         else:
@@ -60,14 +60,15 @@ class ShoppingCart:
         # Check if item already in cart and modify.
         
         for idx, item in enumerate(self.cart_items):
-            if item.name == item_to_purchase.name:
+            if item.item_name == item_to_purchase.item_name:
 
                 # If item_to_purchase is default, do not modify
                 if item_to_purchase.is_default():
                     break
 
                 # Change the quantity of the item in shopping cart
-                item.item_quantity = item_to_purchase.item_quantity                
+                item.item_quantity = item_to_purchase.item_quantity
+                break                
 
         # Item not found        
         else:
@@ -194,8 +195,6 @@ def prompt_shopping_cart():
     
 def main():
     shopping_cart = prompt_shopping_cart()
-    shopping_cart.cart_items = init_items()
-
     print_menu(shopping_cart)
    
 
